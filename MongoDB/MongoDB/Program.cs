@@ -119,7 +119,7 @@ namespace MongoDB
         static void Main(string[] args)
         {
             LoadSettings();
-            string st;
+           /* string st;
             do
             {
                 Console.Clear();
@@ -181,8 +181,9 @@ namespace MongoDB
                 Console.Write("Do you want to continue?(Yes/No) ");
                 st = Console.ReadLine();
             } while (st.ToLower()!="no");
-
-
+*/
+           Program2.c();
+            
 
         }
     }
