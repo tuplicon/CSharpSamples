@@ -26,6 +26,11 @@ namespace FirstWebApplication
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
+            bundles.Add(new ScriptBundle("~/bundles/something").Include(
+                      "~/Scripts/app.js",
+                      "~/Scripts/GameCtrl.js"));
+            bundles.Add(new ScriptBundle("~/bundles/AngularCustom").IncludeDirectory("~/app","*.js",true));
+
         }
     }
 }

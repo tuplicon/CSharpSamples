@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using FirstWebApplication.Entities;
 using FirstWebApplication.Services;
+using Newtonsoft.Json;
 
 namespace FirstWebApplication.Controllers
 {
@@ -30,22 +31,31 @@ namespace FirstWebApplication.Controllers
                 {
                     var gameService=new GameService();
                     gameService.Create(game);
-                    return RedirectToAction("Index");
+                    //return RedirectToAction("Index");
+                    return Json(game, JsonRequestBehavior.AllowGet);
                 }
-                return View();
+                
             }
             catch (Exception)
             {
                 
                 return View();
             }
+            return View();
         }
 
-        public ActionResult Index()
+       /* public ActionResult Index()
         {
             var gameService=new GameService();
             var gameDetails = gameService.GetGamesDetails(5, 0);
             return View(gameDetails);
+        }*/
+        public ActionResult IndexVM()
+        {
+            var gameService = new GameService();
+            var gameDetails = gameService.GetGamesDetails(5, 0);
+            //return View(gameDetails);
+            return Json(gameDetails, JsonRequestBehavior.AllowGet); 
         }
     }
 }
