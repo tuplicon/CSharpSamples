@@ -15,7 +15,7 @@ namespace SerializingJson
     {
         static void Main(string[] args)
         {
-            Product product =new Product();
+           /* Product product =new Product();
             product.Name = "Apple";
             product.Price = (float) 3.99;
             product.ExpiryDate=new DateTime(2008,12,28);
@@ -52,8 +52,12 @@ namespace SerializingJson
             {
                 Product pr = serializer.Deserialize<Product>(reader);
                 Console.WriteLine(pr.ExpiryDate);
-            }
-           
+            }*/
+            string a = "hello";
+            string b = "h";
+            b += "ello";
+            Console.WriteLine(a==b);
+            Console.WriteLine((object)a==(object)b);
 
         }
     }
