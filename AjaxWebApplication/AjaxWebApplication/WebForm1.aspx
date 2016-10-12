@@ -9,7 +9,8 @@
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootswatch/3.2.0/sandstone/bootstrap.min.css">
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
     <style>
-        body { padding-top:10px; }
+        body { padding-top:10px;font-size: 13px;}
+        .table{ width: 70%; height: }
     </style>
 <body ng-app="myApp" >
 
@@ -46,7 +47,7 @@
                   <td>{{x.date | jsonDate}}</td>
               </tr>
             </table>--%>
-             <table class="table table-bordered table-striped">
+             <table class="table table-bordered table-striped table-hover" style="font-size: 15px;">
     
     <thead>
       <tr>
@@ -80,22 +81,25 @@
 			 <span ng-show="sortType == 'phone' && sortReverse==false" class="fa fa-caret-down"></span>
 			  <span ng-show="sortType == 'phone' && sortReverse==true" class="fa fa-caret-up"></span>
           </a>
+              </td>
+          <td> <a href="#">Remove</a></td>
       </tr>
     </thead>
     
     <tbody>
-      <tr ng-repeat="roll in myData | orderBy:sortType:sortReverse | filter:searchItem | filter:jsonDate">
+      <tr ng-repeat="(dataIndex,roll) in myData | orderBy:sortType:sortReverse | filter:searchItem | filter:jsonDate">
         <td>{{ roll.item }}</td>
         <td>{{ roll.qty }}</td>
         <td>{{ roll.date | jsonDate }}</td>
           <td>{{ roll.phone | tel}}</td>
+          <td><button class="btn btn-danger remove show_tip" ng-click="retData.deleteResult(roll.Id)">Remove</button></td>
       </tr>
         <tr>
             <td><input type="text" ng-model="item" id="item1"/></td>
             <td><input type="text" ng-model="qty" id="qty1"/></td>
             <td><input type="date" ng-model="date" id="date"/></td>
             <td><input type="text" ng-model="phone" id="phone"/></td>
-            <td><input type="submit" ng-click="retData.saveResult()"/></td>
+            <td><input class="btn btn-primary" type="submit" ng-click="retData.saveResult()" value="Insert"/></td>
         </tr>
     </tbody>
     
@@ -120,7 +124,7 @@
                 .controller("myCtrl", function ($scope, $http) {
                     $scope.retData = {};
                     $scope.searchItem = '';
-                    $scope.sortType = 'item';
+                    $scope.sortType = '';
                     $scope.sortReverse = false;
                     $scope.IsVisible = true;
                     $scope.retData.getResult = function () {
@@ -138,8 +142,12 @@
                         $scope.data1 = { "item": $scope.item, "qty": $scope.qty,"date":$scope.date,"phone":$scope.phone };
                         $http.post('WebForm1.aspx/SaveData',$scope.data1).success(function (data, status, headers, config) {
                                 console.log(data);
-                                
-                                
+
+                                $scope.retData.getResult();
+                                $scope.item = '';
+                                $scope.qty = '';
+                                $scope.date = '';
+                                $scope.phone = '';
                                 // $scope.myData = data.d.MyList;*/
 
                             })
@@ -147,17 +155,24 @@
                                 $scope.status = status;
                             });
                     };
+                    $scope.retData.deleteResult = function (x) {
+                        $scope.data1 = { "id": x};
+                        $http.post('WebForm1.aspx/DeleteData', $scope.data1).success(function (data, status, headers, config) {
+                            console.log(data);
+
+                            $scope.retData.getResult();
+                           
+                            // $scope.myData = data.d.MyList;*/
+
+                        })
+                            .error(function (data, status, headers, config) {
+                                $scope.status = status;
+                            });
+                        console.log(x);
+                    };
                 }).config(function ($httpProvider) {
                     $httpProvider.defaults.headers.post = {};
                     $httpProvider.defaults.headers.post["Content-Type"] = "application/json; charset=utf-8";
-                }).filter("dateFilter", function ($filter) {
-                    return function (item) {
-                        if (item != null) {
-                            var parsedDate = new Date(parseInt(item.substr(6)));
-                            return $filter('Date')(parsedDate, 'yyyy-MM-dd');
-                        }
-                        return "";
-                    };
                 }).filter('jsonDate', ['$filter', function ($filter) {
                     return function (input, format) {
                         return (input)

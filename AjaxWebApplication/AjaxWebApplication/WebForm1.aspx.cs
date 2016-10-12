@@ -55,6 +55,14 @@ namespace AjaxWebApplication
 
         }
 
+        [WebMethod]
+        public static bool DeleteData(int id)
+        {
+            var select = MyObj.DeleteData(id);
+            return select;
+            
+        }
+
 
        
     }
