@@ -45,7 +45,8 @@ namespace ProjectWebApplication
     public class ProjectMaster
     {
         [BsonId]
-        public  ObjectId _id { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public  string _id { get; set; }
 
         public string Symbol { get; set; }
         public string Side { get; set; }

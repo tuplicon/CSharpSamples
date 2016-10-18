@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
     <style>
         body { padding-top:10px;font-size: 13px;}
-        .table{ width: 70%; height: }
+        
     </style>
 <body ng-app="myApp" >
 
@@ -164,27 +164,92 @@
               </td>
 
           <td> <a href="#">Remove</a></td>
+          <td> <a href="#">Edit</a></td>
       </tr>
     </thead>
     
     <tbody>
       <tr ng-repeat="(dataIndex,pr) in myData | orderBy:sortType:sortReverse | filter:searchItem | filter:jsonDate">
           
-        <td>{{ pr.Symbol }}</td>
-        <td>{{ pr.Side }}</td>
-        <td>{{ pr.Evaluator }}</td>
-          <td>{{ pr.RatePriceFee}}</td>
-          <td>{{ pr.Expiration | jsonDate}}</td>
-          <td>{{ pr.UsePercentMoney}}</td>
-          <td>{{ pr.BidStrike}}</td>
-          <td>{{ pr.MidStrike}}</td>
-          <td>{{ pr.HighStrike}}</td>
-          <td>{{ pr.Account}}</td>
-          <td>{{ pr.Limit}}</td>
-          <td>{{ pr.ListenerType}}</td>
-          <td>{{ pr.JobId}}</td>
-          <td>{{ pr.Comments}}</td>
+        <%--<td>{{ pr.Symbol }}</td>--%> 
+          <td>
+            <span data-ng-hide="editMode">{{pr.Symbol}}</span>
+            <input type="text" data-ng-show="editMode" ng-model="pr.Symbol" data-ng-required />
+        </td>
+         <td>
+            <span data-ng-hide="editMode">{{pr.Side}}</span>
+            <select ng-model="sideSelected" data-ng-show="editMode">
+                 <option ng-repeat="option in Side" ng-selected="option==pr.Side" value="{{ option }}">{{option}}</option>
+            </select>
+        </td>
+         <td>
+            <span data-ng-hide="editMode">{{pr.Evaluator}}</span>
+            <select ng-model="evaluatorSelected" data-ng-show="editMode">
+                 <option ng-repeat="option in Side" ng-selected="option==pr.Evaluator" value="{{ option }}">{{option}}</option>
+            </select>
+        </td>
+          
+           <td>
+            <span data-ng-hide="editMode">{{pr.RatePriceFee}}</span>
+            <select ng-model="ratePriceSelected" data-ng-show="editMode">
+                 <option ng-repeat="option in Side" ng-selected="{{option==pr.ratePriceSelected}}">{{option}}</option>
+            </select>
+        </td>
+          
+           <td>
+            <span data-ng-hide="editMode">{{pr.Expiration | jsonDate}}</span>
+            <input type="date" data-ng-show="editMode" ng-model="Expiration"/>
+        </td>
+          
+           <td>
+            <span data-ng-hide="editMode">{{pr.UsePercentMoney}}</span>
+            <input type="text" data-ng-show="editMode" ng-model="pr.UsePercentMoney" data-ng-required />
+        </td>
+         
+           <td>
+            <span data-ng-hide="editMode">{{pr.BidStrike}}</span>
+            <input type="text" data-ng-show="editMode" ng-model="pr.BidStrike" data-ng-required />
+        </td>
+          
+           <td>
+            <span data-ng-hide="editMode">{{pr.MidStrike}}</span>
+            <input type="text" data-ng-show="editMode" ng-model="pr.MidStrike" data-ng-required />
+        </td>
+          
+           <td>
+            <span data-ng-hide="editMode">{{pr.HighStrike}}</span>
+            <input type="text" data-ng-show="editMode" ng-model="pr.HighStrike" data-ng-required />
+        </td>
+          
+           <td>
+            <span data-ng-hide="editMode">{{pr.Account}}</span>
+            <input type="text" data-ng-show="editMode" ng-model="pr.Account" data-ng-required />
+        </td>
+          
+           <td>
+            <span data-ng-hide="editMode">{{pr.Limit}}</span>
+            <input type="text" data-ng-show="editMode" ng-model="pr.Limit" data-ng-required />
+        </td>
+           <td>
+            <span data-ng-hide="editMode">{{pr.ListenerType}}</span>
+            <select ng-model="sideSelected" data-ng-show="editMode">
+                 <option ng-repeat="option in ListnerType" ng-selected="option==pr.ListenerType" value="{{ option }}">{{option}}</option>
+            </select>
+        </td>
+          
+           <td>
+            <span data-ng-hide="editMode">{{pr.JobId}}</span>
+            <input type="text" data-ng-show="editMode" ng-model="pr.JobId" data-ng-required />
+        </td>
+          
+           <td>
+            <span data-ng-hide="editMode">{{pr.Comments}}</span>
+            <input type="text" data-ng-show="editMode" ng-model="pr.Comments" data-ng-required />
+        </td>
           <td><button class="btn btn-danger remove show_tip" ng-click="retData.deleteResult(pr._id)">Remove</button></td>
+          <td><button class="btn btn-primary remove show_tip" data-ng-hide="editMode" data-ng-click="editMode = true">Edit</button>
+              <button class="btn btn-primary remove show_tip" data-ng-show="editMode" data-ng-click="editMode = false; ">Update</button>
+          </td>
       </tr>
         <tr>
             <td><input type="text" ng-model="Symbol" id="Symobl"/></td>
@@ -201,7 +266,7 @@
             <td><select ng-model="ListnerTypeSelected" ng-options="option for option in ListnerType"></select></td>
             <td><input type="text" ng-model="JobId" id="JobId"/></td>
             <td><input type="text" ng-model="Comments" id="Comments"/></td>
-            <td><input class="btn btn-primary" type="submit" ng-click="retData.saveResult()" value="Insert"/></td>
+            <td colspan="2" align="center"><input class="btn btn-primary" type="submit" ng-click="retData.saveResult()" value="Insert"/></td>
         </tr>
     </tbody>
     
@@ -226,6 +291,7 @@
                     .controller("myCtrl", function ($scope, $http) {
                         $scope.retData = {};
                         $scope.searchItem = '';
+                        $scope.editMode = false;
                         $scope.sortType = '';
                         $scope.sortReverse = false;
                         $scope.IsVisible = true;
@@ -238,6 +304,7 @@
                                     $scope.RatePrice = data.d[2];
                                     $scope.ListnerType = data.d[3];
                                     $scope.myData = data.d[4].MyList;
+                                    $scope.ratePriceSelected = data.d[4].MyList.RatePrice;
 
                                 })
                                 .error(function (data, status, headers, config) {
@@ -250,13 +317,24 @@
                                 console.log(data);
 
                                 $scope.retData.getResult();
-                                $scope.item = '';
-                                $scope.qty = '';
-                                $scope.date = '';
-                                $scope.phone = '';
-                                // $scope.myData = data.d.MyList;*/
+                                $scope.Symbol = '';
+                                $scope.sideSelected = '';
+                                $scope.evaluatorSelected = '';
+                                $scope.ratePriceSelected = '';
+                                $scope.Expiration = '';
+                                $scope.UsePercentMoney = '';
+                                $scope.BidStrike = '';
+                                $scope.MidStrike = '';
+                                $scope.HighStrike = '';
+                                $scope.Account = '';
+                                $scope.Limit = '';
+                                $scope.ListnerTypeSelected = '';
+                                $scope.JobId = '';
+                                $scope.Comments = '';
 
-                            })
+                                    // $scope.myData = data.d.MyList;*/
+
+                                })
                                 .error(function (data, status, headers, config) {
                                     $scope.status = status;
                                 });

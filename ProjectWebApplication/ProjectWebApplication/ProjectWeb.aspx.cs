@@ -55,7 +55,7 @@ namespace ProjectWebApplication
         }
 
         [WebMethod]
-        public static bool DeleteData(Object id)
+        public static bool DeleteData(string id)
         {
             var select = MyObj.DeleteData(id);
             return select;

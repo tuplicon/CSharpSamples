@@ -69,7 +69,7 @@ namespace ProjectWebApplication
             }
         }
 
-        public static bool DeleteData(Object id)
+        public static bool DeleteData(string id)
         {
             try
             {
