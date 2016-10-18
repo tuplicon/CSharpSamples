@@ -1,0 +1,217 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+</head>
+<body>
+<h1>Mdbc Release Notes</h1>
+<h2>v4.8.7</h2>
+<p>New <code>Mdbc.ArgumentCompleters.ps1</code> for v5 native, TabExpansionPlusPlus, and the latest TabExpansion2.ps1. It replaces <code>TabExpansion.Mdbc.ps1</code> which works with TabExpansion2.ps1 only.</p>
+<h2>v4.8.6</h2>
+<p><code>New-MdbcQuery</code>: new parameter <code>TypeAlias</code> for type aliases (MongoDB 3.2).</p>
+<h2>v4.8.5</h2>
+<p>C# driver 1.11, tested with MongoDB 3.2</p>
+<h2>v4.8.4</h2>
+<p>C# driver 1.10.1, tested with MongoDB 3.0.5</p>
+<h2>v4.8.3</h2>
+<p>C# driver 1.10, MongoDB 3.0.0-rc7</p>
+<p>Possibly incompatible change. Due to the server and driver changes cmdlets do not write server results on exceptions. Similar server data are available in error inner exceptions, e.g. the property <code>Result</code> (<code>BsonDocument</code>).</p>
+<h2>v4.8.2</h2>
+<p>C# driver v1.9.2</p>
+<h2>v4.8.1</h2>
+<p>Fixed #3 (<code>Get-MdbcData -SortBy</code> with file collections).</p>
+<h2>v4.8.0</h2>
+<p>Resolved #2. <code>Mdbc.Dictionary</code> gets null on <code>$data['missing-key']</code>.</p>
+<h2>v4.7.3</h2>
+<p>C# driver v1.9.1</p>
+<h2>v4.7.2</h2>
+<p><code>Connect-Mdbc</code>: New parameter <code>Timeout</code>: Determines the maximum time to wait before timing out.</p>
+<h2>v4.7.0</h2>
+<p>C# driver v1.9. Tested with MongoDB v2.6.0-rc3</p>
+<p><em>File collections</em></p>
+<ul>
+<li>Update operations check for invalid element names, as in the core.</li>
+<li>Adjusted operation behaviour to corresponding changes in the core.</li>
+</ul>
+<p><code>Invoke-MdbcAggregate</code></p>
+<ul>
+<li>Uses the cursor output mode.</li>
+<li>New parameters <code>BatchSize</code>, <code>MaxTime</code>, <code>AllowDiskUse</code>.</li>
+<li>Renamed parameter <code>Operation</code> to <code>Pipeline</code>, as in the driver.</li>
+</ul>
+<p><code>New-MdbcUpdate</code></p>
+<ul>
+<li>New parameters: <code>Mul</code>, <code>Xor</code>, <code>Min</code>, <code>Max</code>, <code>CurrentDate</code>.</li>
+</ul>
+<h2>v4.6.0</h2>
+<p>New parameter <code>Retry</code> of <code>Export-MdbcData</code> tells to retry on failures to open the file and specifies one or two arguments. The first is the retry timeout. The second is the retry interval, the default is 50 milliseconds.</p>
+<p>For example, it can be used together with <code>Append</code> for adding data to the same file by several writers simultaneously.</p>
+<h2>v4.5.1</h2>
+<p>Input JSON format. It does not have to be one object per line. It is a sequence of objects and arrays of objects. Arrays are unrolled. Top objects and arrays are optionally separated by spaces, tabs, and new lines.</p>
+<p>As a result, output of PowerShell <code>ConvertTo-Json</code> (V3) saved to a file can be read and processed by Mdbc cmdlets:</p>
+<pre><code>Get-Process | ConvertTo-Json -Depth 1 | Set-Content process.json
+Open-MdbcFile process.json -Simple
+Get-MdbcData @{Name=&#39;mongod&#39;}</code></pre>
+<h2>v4.5.0</h2>
+<p><strong>JSON file collections and data files</strong></p>
+<p>Cmdlets <code>Open-MdbcFile</code>, <code>Save-MdbcFile</code>, <code>Import-MdbcData</code>, <code>Export-MdbcData</code> support JSON format in addition to BSON. New parameter <code>FileFormat</code> specifies <code>Auto</code>, <code>Bson</code>, or <code>Json</code>. <code>Auto</code> is the default, format is defined by the file extension: <em>.json</em> is for JSON, others are for BSON.</p>
+<h2>v4.4.6</h2>
+<p>Fixed a case with Mdbc serialization registered too late. All cmdlets now ensure this registration first of all.</p>
+<h2>v4.4.5</h2>
+<p><code>Export-MdbcData</code></p>
+<ul>
+<li>The parameter <code>InputObject</code> is positional, similar to <code>Add-MdbcData</code> and <code>New-MdbcData</code></li>
+</ul>
+<p><code>Script\TabExpansionProfile.Mdbc.ps1</code></p>
+<ul>
+<li>Added completers for <code>Property</code> arguments of <code>Add-MdbcData</code>, <code>New-MdbcData</code>, and <code>Export-MdbcData</code>. If you use the suggested <code>TabExpansion2.ps1</code> update it, too.</li>
+</ul>
+<h2>v4.4.4</h2>
+<p><code>IConvertibleToBsonDocument</code></p>
+<ul>
+<li><code>Mdbc.Dictionary</code> implements <code>MongoDB.Bson.IConvertibleToBsonDocument</code>.</li>
+<li><code>IConvertibleToBsonDocument</code> is used instead of <code>Mdbc.Dictionary</code>, where appropriate. Thus, more types are supported by some operations, e.g. <code>Add-MdbcData</code>.</li>
+<li>Renamed <code>Mdbc.Dictionary.Document()</code> to <code>Mdbc.Dictionary.ToBsonDocument()</code>. This change is potentially breaking. But normally scripts should not use this method.</li>
+</ul>
+<h2>v4.4.3</h2>
+<p>New <code>Script\TabExpansionProfile.Mdbc.ps1</code> adds TabExpansion2 completers for arguments of <code>Connect-Mdbc</code> parameters <code>DatabaseName</code> and <code>CollectionName</code> (requires PowerShell v3).</p>
+<h2>v4.4.1</h2>
+<p><code>Remove-MdbcData</code>, <code>Update-MdbcData</code></p>
+<ul>
+<li>Removed obsolete parameter <code>Modes</code>, use switches <code>One</code> in <code>Remove-MdbcData</code>, <code>Add</code> and <code>All</code> in <code>Update-MdbcData</code>. Note that defaults (all and one) are different, Mdbc follows the driver API in this case.</li>
+</ul>
+<p><code>Scripts\Update-MongoFiles.ps1</code></p>
+<ul>
+<li>Parameter <code>Path</code> accepts one or more paths.</li>
+</ul>
+<h2>v4.4.0</h2>
+<p>Implicit conversion of <code>Mdbc.Dictionary</code> and <code>BsonDocument</code> objects to <code>_id</code> queries is not supported. Objects are converted to queries with all elements. Old queries may be broken or not but they should be redesigned in any case.</p>
+<p><code>Remove-MdbcData</code></p>
+<ul>
+<li>New switch <code>One</code> is used instead of <code>Modes</code>.</li>
+<li><code>Modes</code> will be removed in the next release.</li>
+</ul>
+<p><code>Update-MdbcData</code></p>
+<ul>
+<li>New switches <code>Add</code> and <code>All</code> are used instead of <code>Modes</code>.</li>
+<li><code>Modes</code> will be removed in the next release.</li>
+</ul>
+<p><code>Get-MdbcData</code></p>
+<ul>
+<li>New parameter <code>ResultVariable</code>.</li>
+</ul>
+<p>File collections</p>
+<ul>
+<li>Fixed distinct queries with document values.</li>
+<li>Optimized <code>_id</code> queries for normal file collections.</li>
+</ul>
+<p><code>Scripts\Update-MongoFiles.ps1</code></p>
+<ul>
+<li>New switch <code>Log</code> tells to log changes to *files_log*.</li>
+<li>The script outputs an object with some statistics.</li>
+</ul>
+<p><em>Mdbc.Format.ps1xml</em></p>
+<ul>
+<li>Removed <code>BsonValue</code> type formats from the module. Need in direct use of these types is gradually reduced to minimum, scripts normally should not use them.</li>
+</ul>
+<h2>v4.3.1</h2>
+<p>File collection queries:</p>
+<ul>
+<li>Support <code>$in</code> and <code>$nin</code> with regular expressions and <code>$all</code> with <code>$elemMatch</code> and regular expressions.</li>
+<li><code>$mod</code> arguments are processed like in MongoDB.</li>
+<li>Improved input validation and error messages.</li>
+</ul>
+<h2>v4.3.0</h2>
+<p>The new concept of bson file collections is stabilized.</p>
+<p><code>Get-MdbcData</code></p>
+<p>Removed the parameter <code>Cursor</code> as not adding much value. Cursors can be obtained from a collection and then used exactly in the same way as before.</p>
+<p><code>Add-MdbcData</code>, <code>Remove-MdbcData</code>, <code>Update-MdbcData</code></p>
+<ul>
+<li>Parameter <code>Result</code> supports file collections and gets similar information.</li>
+<li>Reduced error processing differences between MongoDB and file collections.</li>
+</ul>
+<p><code>Scripts\Mdbc.ps1</code></p>
+<ul>
+<li>Without parameters it just loads the helpers and does not connect.</li>
+<li>Operator shortcut variables are read only.</li>
+</ul>
+<h2>v4.2.0</h2>
+<h3>Bson file collections</h3>
+<p>This release introduces bson data file collections which do not require MongoDB. They are opened and saved by new cmdlets <code>Open-MdbcFile</code> and <code>Save-MdbcFile</code> and support commands <code>Get-MdbcData</code>, <code>Add-MdbcData</code>, <code>Remove-MdbcData</code>, and <code>Update-MdbcData</code>.</p>
+<p>See FILE COLLECTIONS in help:</p>
+<pre><code>Import-Module Mdbc; help about_Mdbc</code></pre>
+<p>The concept is yet experimental and features may change.</p>
+<h3>Other changes</h3>
+<p><code>New-MdbcQuery</code>:</p>
+<ul>
+<li>Parameter <code>Mod</code> accepts <code>long</code> values</li>
+<li>Some parameters accept nulls if they are accepted in native queries</li>
+</ul>
+<p><code>Get-MdbcData</code></p>
+<ul>
+<li>Parameters <code>Remove</code> and <code>Update</code> can be used with <code>As</code>.</li>
+<li>Parameters <code>First</code> and <code>Last</code> are not used together.</li>
+<li>Parameter <code>Property</code> also accepts <code>IMongoFields</code>.</li>
+<li>Fixed <code>Last</code> with <code>Count</code>.</li>
+</ul>
+<p><code>Add-MdbcData</code>, <code>Remove-MdbcData</code>, <code>Update-MdbcData</code></p>
+<ul>
+<li>If <code>Result</code> is specified then it is written on non terminating errors.</li>
+</ul>
+<p><code>Invoke-MdbcCommand</code></p>
+<ul>
+<li>The response is written on non terminating errors.</li>
+</ul>
+<p><code>Update-MongoFiles.ps1</code> and <code>Get-MongoFile.ps1</code>:</p>
+<ul>
+<li>New named parameter <code>CollectionName</code></li>
+<li>The current PowerShell path is used instead of the current directory</li>
+</ul>
+<h2>v4.1.0</h2>
+<h3>New cmdlet <code>Invoke-MdbcAggregate</code></h3>
+<p>The driver currently provides just a raw API for aggregate operations. So does this cmdlet. When the API change the cmdlet will be redesigned.</p>
+<h3><code>Get-MdbcData</code>, <code>Import-MdbcData</code>, <code>Invoke-MdbcMapReduce</code></h3>
+<p>Removed <code>AsCustomObject</code>. The parameter <code>As</code> is used for all types, including two new, <code>Lazy</code> and <code>Raw</code>. The argument is either a type or a shortcut enum.</p>
+<p>The result cursor always represents documents according to the type <code>As</code>.</p>
+<h3><code>New-MdbcData</code>, <code>Add-MdbcData</code>, <code>Export-MdbcData</code></h3>
+<p>If <code>_id</code> is presented more than once by <code>Id</code>, <code>NewId</code>, <code>Property</code> or an input object then an exception is thrown.</p>
+<h2>v4.0.0</h2>
+<p>C# driver 1.8.3</p>
+<p>This release introduces breaking changes in cmdlets redesigned for cleaner and easier to use interface. Also, some parameters were renamed in order to follow C# driver method names.</p>
+<h3><code>New-MdbcQuery</code></h3>
+<p>Query operator parameters cannot be used together in a single call.</p>
+<p>Renamed parameters:</p>
+<ul>
+<li><code>GE</code> -&gt; <code>GTE</code></li>
+<li><code>LE</code> -&gt; <code>LTE</code></li>
+<li><code>Match</code> -&gt; <code>Matches</code></li>
+<li><code>Matches</code> -&gt; <code>ElemMatch</code></li>
+</ul>
+<p>Changed parameters:</p>
+<ul>
+<li>switch <code>Not</code> becomes a parameter with an argument</li>
+<li>parameter <code>Exists &lt;bool&gt;</code> is replaced by switches <code>Exists</code>, <code>NotExists</code></li>
+</ul>
+<h3><code>New-MdbcUpdate</code></h3>
+<p>Changed parameters so that they all can be used together and each parameter can specify several fields with arguments. As a result, a single call with several parameters and/or arguments may create complex updates.</p>
+<p>Renamed parameters:</p>
+<ul>
+<li><code>Band</code> -&gt; <code>BitwiseAnd</code></li>
+<li><code>Bor</code> -&gt; <code>BitwiseOr</code></li>
+<li><code>Increment</code> -&gt; <code>Inc</code></li>
+</ul>
+<h3><code>New-MdbcData</code></h3>
+<p>Parameter <code>Value</code> makes <code>BsonValue</code> only, including <code>BsonDocument</code>, <code>BsonArray</code>.</p>
+<h3>Other changes</h3>
+<p><code>Get-MdbcData</code> and <code>Update-MdbcData</code> catch <code>MongoException</code> and write it as non terminating error, i.e. depending on the error action processing may continue.</p>
+<p>If none of parameters <code>ConnectionString</code>, <code>DatabaseName</code>, <code>CollectionName</code> is specified for <code>Connect-Mdbc</code> then they are assumed to be <code>.</code>, <code>test</code>, <code>test</code>.</p>
+<p>Fixed several issues with null arguments in cmdlets and nulls in documents.</p>
+<p>Fixed false positive cyclic reference errors.</p>
+<hr />
+<p><a href="https://github.com/nightroman/Mdbc/tree/master/About">Other versions</a></p>
+</body>
+</html>

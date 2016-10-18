@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Mdbc</id>
+    <version>4.8.7</version>
+    <title>Mdbc</title>
+    <authors>Roman Kuzmin</authors>
+    <owners>Roman Kuzmin</owners>
+    <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
+    <projectUrl>https://github.com/nightroman/Mdbc</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Windows PowerShell v2.0+ module based on the official MongoDB C# driver.
+It makes MongoDB scripting in PowerShell easier and provides some extra
+features like bson/json file collections which do not require MongoDB.</description>
+    <summary>Windows PowerShell v2.0+ module based on the official MongoDB C# driver.
+It makes MongoDB scripting in PowerShell easier and provides some extra
+features like bson/json file collections which do not require MongoDB.</summary>
+    <tags>Mongo MongoDB PowerShell Module Database</tags>
+  </metadata>
+</package>

@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+</head>
+<body>
+<h1>MongoDB Cmdlets for PowerShell</h1>
+<p>Mdbc is the Windows PowerShell v2.0+ module based on the official <a href="https://github.com/mongodb/mongo-csharp-driver">MongoDB C# driver</a>. Mdbc makes MongoDB scripting in PowerShell easier and provides some extra features like bson/json file collections which do not even require MongoDB.</p>
+<h2>Quick Start</h2>
+<p><strong>Step 1:</strong> Get and install. Mdbc is distributed as the NuGet package <a href="https://www.nuget.org/packages/Mdbc">Mdbc</a>. Download it to the current location as the directory <em>&quot;Mdbc&quot;</em> by this PowerShell command:</p>
+<pre><code>Invoke-Expression &quot;&amp; {$((New-Object Net.WebClient).DownloadString(&#39;https://github.com/nightroman/PowerShelf/raw/master/Save-NuGetTool.ps1&#39;))} Mdbc&quot;</code></pre>
+<p>Alternatively, download it by NuGet tools or <a href="http://nuget.org/api/v2/package/Mdbc">directly</a>. In the latter case save it as <em>&quot;.zip&quot;</em> and unzip. Use the package subdirectory <em>&quot;tools/Mdbc&quot;</em>.</p>
+<p>Copy the directory <em>Mdbc</em> to a PowerShell module directory, see <code>$env:PSModulePath</code>, normally like this:</p>
+<pre><code>C:/Users/&lt;User&gt;/Documents/WindowsPowerShell/Modules/Mdbc</code></pre>
+<p><strong>Step 2:</strong> In a PowerShell command prompt import the module:</p>
+<pre><code>Import-Module Mdbc</code></pre>
+<p><strong>Step 3:</strong> Take a look at help:</p>
+<pre><code>help about_Mdbc
+help Connect-Mdbc -full
+...</code></pre>
+<p><strong>Step 4:</strong> Invoke these operations line by line, reading the comments (make sure that mongod is started, otherwise <code>Connect-Mdbc</code> fails):</p>
+<pre><code># Load the module
+Import-Module Mdbc
+
+# Connect the new collection test.test
+Connect-Mdbc . test test -NewCollection
+
+# Add some test data
+@{_id=1; value=42}, @{_id=2; value=3.14} | Add-MdbcData
+
+# Get all data as custom objects and show them in a table
+Get-MdbcData -As PS | Format-Table -AutoSize | Out-String
+
+# Query a document by _id using a query expression
+$data = Get-MdbcData (New-MdbcQuery _id -EQ 1)
+$data
+
+# Update the document, set the &#39;value&#39; to 100
+$data._id | Update-MdbcData (New-MdbcUpdate -Set @{value = 100})
+
+# Query the document using a simple _id query
+Get-MdbcData $data._id
+
+# Remove the document
+$data._id | Remove-MdbcData
+
+# Count remaining documents, 1 is expected
+Get-MdbcData -Count</code></pre>
+<p>If the code above works then the module is installed and ready to use.</p>
+<h2>Next Steps</h2>
+<p>Read cmdlet help topics and take a look at their examples, they show some basic use cases to start with.</p>
+<p>Take a look at scripts in the directory <em>Scripts</em>, especially the interactive profile <em>Mdbc.ps1</em>. Other scripts are rather toys but may be useful. Even more examples can be found in the directory <em>Tests</em> of the project repository.</p>
+<p>Mdbc cmdlets are designed for rather simple jobs. For advanced operations the C# driver API should be used directly. Some API was specifically designed with PowerShell in mind. See the C# driver manuals.</p>
+</body>
+</html>
