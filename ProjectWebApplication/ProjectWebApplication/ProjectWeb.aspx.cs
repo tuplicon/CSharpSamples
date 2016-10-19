@@ -61,5 +61,22 @@ namespace ProjectWebApplication
             return select;
 
         }
+        [WebMethod]
+        public static bool UpdateData(string id,string symbol, SideEnum side, PriceComparisonEnum evaluator,
+            RatePriceOrFeeEnum ratePriceFee, DateTime expiration, bool usePercentMoney, double bidStrike,
+            double midStrike, double highStrike, string account, double limit, ListenerTypeEnum listenerType,
+            string jobId, string comments)
+        {
+            var select = MyObj.UpdateData(id,symbol, side, evaluator, ratePriceFee, expiration, usePercentMoney, bidStrike, midStrike, highStrike, account, limit, listenerType, jobId, comments);
+
+            /*   return new JavaScriptSerializer().Serialize(
+                   "Hello, " + item + ", " + qty + " " + date+ " "+ phone+"!");*/
+
+            return select;
+            //return "Hello i am parth";
+
+
+        }
+
     }
 }

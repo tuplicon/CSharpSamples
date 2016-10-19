@@ -178,27 +178,28 @@
         </td>
          <td>
             <span data-ng-hide="editMode">{{pr.Side}}</span>
-            <select ng-model="sideSelected" data-ng-show="editMode">
-                 <option ng-repeat="option in Side" ng-selected="option==pr.Side" value="{{ option }}">{{option}}</option>
+            <select ng-model="pr.Side" data-ng-show="editMode">
+                <option>{{pr.Side}}</option>
+                 <option ng-repeat="option in Side" ng-selected="{{option==pr.Side}}" value="{{ option }}">{{option}}</option>
             </select>
         </td>
          <td>
             <span data-ng-hide="editMode">{{pr.Evaluator}}</span>
-            <select ng-model="evaluatorSelected" data-ng-show="editMode">
-                 <option ng-repeat="option in Side" ng-selected="option==pr.Evaluator" value="{{ option }}">{{option}}</option>
+            <select ng-model="pr.Evaluator" data-ng-show="editMode">
+                 <option ng-repeat="option in Evaluator" ng-selected="{{option==pr.Evaluator}}" value="{{ option }}">{{option}}</option>
             </select>
         </td>
           
            <td>
             <span data-ng-hide="editMode">{{pr.RatePriceFee}}</span>
-            <select ng-model="ratePriceSelected" data-ng-show="editMode">
-                 <option ng-repeat="option in Side" ng-selected="{{option==pr.ratePriceSelected}}">{{option}}</option>
+            <select ng-model="pr.RatePriceFee" data-ng-show="editMode">
+                 <option ng-repeat="option in RatePrice" ng-selected="{{option==pr.RatePriceFee}}">{{option}}</option>
             </select>
         </td>
           
            <td>
             <span data-ng-hide="editMode">{{pr.Expiration | jsonDate}}</span>
-            <input type="date" data-ng-show="editMode" ng-model="Expiration"/>
+            <input type="date" data-ng-show="editMode" ng-model="Expiration" />
         </td>
           
            <td>
@@ -232,7 +233,7 @@
         </td>
            <td>
             <span data-ng-hide="editMode">{{pr.ListenerType}}</span>
-            <select ng-model="sideSelected" data-ng-show="editMode">
+            <select ng-model="pr.ListenerType" data-ng-show="editMode">
                  <option ng-repeat="option in ListnerType" ng-selected="option==pr.ListenerType" value="{{ option }}">{{option}}</option>
             </select>
         </td>
@@ -248,7 +249,9 @@
         </td>
           <td><button class="btn btn-danger remove show_tip" ng-click="retData.deleteResult(pr._id)">Remove</button></td>
           <td><button class="btn btn-primary remove show_tip" data-ng-hide="editMode" data-ng-click="editMode = true">Edit</button>
-              <button class="btn btn-primary remove show_tip" data-ng-show="editMode" data-ng-click="editMode = false; ">Update</button>
+              <button class="btn btn-primary remove show_tip" data-ng-show="editMode" data-ng-click="editMode = false; 
+                  retData.updateResult(pr._id,pr.Symbol,pr.Side,pr.Evaluator,pr.RatePriceFee,Expiration,pr.UsePercentMoney,
+                  pr.BidStrike,pr.MidStrike,pr.HighStrike,pr.Account,pr.Limit,pr.ListenerType,pr.JobId,pr.Comments) ">Update</button>
           </td>
       </tr>
         <tr>
@@ -354,6 +357,23 @@
                                     $scope.status = status;
                                 });
                         };
+                        $scope.retData.updateResult=function(id,symbol,side,evaluator,ratePriceFee,expiration,usePercentMoney,
+                  bidStrike,midStrike,highStrike,account,limit,listenerType,jobId,comments) {
+                            $scope.data1 = { "id": id,"symbol": symbol, "side": side, "evaluator": evaluator, "ratePriceFee": ratePriceFee, "expiration": expiration, "usePercentMoney": usePercentMoney, 
+                                "bidStrike": bidStrike, "midStrike": midStrike, "highStrike": highStrike, "account": account, "limit": limit, "listenerType": listenerType, "jobId": jobId, 
+                                "comments": comments };
+                            $http.post('ProjectWeb.aspx/UpdateData', $scope.data1).success(function (data, status, headers, config) {
+                                console.log(data);
+
+                                $scope.retData.getResult();
+                                
+
+                            })
+                                .error(function (data, status, headers, config) {
+                                    $scope.status = status;
+                                });
+                        };
+                        
 
                     }).config(function ($httpProvider) {
                         $httpProvider.defaults.headers.post = {};

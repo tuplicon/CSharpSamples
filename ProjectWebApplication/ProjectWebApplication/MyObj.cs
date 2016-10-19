@@ -89,5 +89,24 @@ namespace ProjectWebApplication
                 return false;
             }
         }
+
+        public static bool UpdateData(string id, string symbol, SideEnum side, PriceComparisonEnum evaluator, RatePriceOrFeeEnum ratePriceFee, DateTime expiration, bool usePercentMoney, double bidStrike, double midStrike, double highStrike, string account, double limit, ListenerTypeEnum listenerType, string jobId, string comments)
+        {
+            /*UpdateDefinition<ProjectMaster> update;*/
+            try
+            {
+                var collection = _db.GetCollection<ProjectMaster>("test");
+                var filter = Builders<ProjectMaster>.Filter.Eq("_id", id);
+                var update = Builders<ProjectMaster>.Update.Set("Comments",comments);
+
+                collection.UpdateOne(filter, update);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+                
+            }
+        }
     }
 }
