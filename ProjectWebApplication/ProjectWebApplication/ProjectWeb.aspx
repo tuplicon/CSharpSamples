@@ -6,11 +6,56 @@
 
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js">
     </script>
+    <%--<link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>--%>
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootswatch/3.2.0/sandstone/bootstrap.min.css">
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
     <style>
-        body { padding-top:10px;font-size: 13px;}
-        
+         body { padding-top:10px;font-size: 13px;}
+        .modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 50px; /* Location of the box */
+    padding-left: 100px;
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+.text-control {
+    width: 100%;
+    height: 50px;
+    font-size: 25px;
+}
+/* Modal Content */
+.modal-content {
+    background-color: #fefefe;
+    margin-top:100px;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+/* The Close Button */
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
     </style>
 <body ng-app="myApp" >
 
@@ -29,31 +74,21 @@
     <div class="form-group">
       <div class="input-group">
         <div class="input-group-addon"><i class="fa fa-search"></i></div>
-
-        <input type="text" class="form-control" placeholder="Search The Item" ng-model="searchItem">
-
+          
+        <input type="text" class="text-control" placeholder="Search The Item" ng-model="searchItem" style="z-index: 1000;">
+              
       </div>      
     </div>
+        </form>
             <div ng-show="IsVisible">
-            <%--<table border="1">
-                <tr>
-                    <th>Item</th>
-                    <th>Quanity</th>
-                    <th>Date</th>
-                </tr>
-              <tr ng-repeat="x in myData ">
-                <td>{{ x.item }}</td>
-                <td>{{x.qty}}</td>
-                  <td>{{x.date | jsonDate}}</td>
-              </tr>
-            </table>--%>
-             <table class="table table-bordered table-striped table-hover" style="font-size: 15px;">
+           <form>
+             <table class="table table-bordered table-striped table-hover" style="font-size: 14px;" width=100%>
     
-    <thead>
-      <tr>
+    <thead >
+      <tr >
         <td>
 			<a href="#" ng-click="sortType='Symbol'; sortReverse=!sortReverse">
-            Symbol
+           <font color="#3399ff">Symbol</font> 
 				<span ng-show="sortType == 'Symbol'&& sortReverse==false" class="fa fa-caret-down"></span>
 			  <span ng-show="sortType == 'Symbol' && sortReverse==true" class="fa fa-caret-up"></span>
 				</a>
@@ -61,7 +96,7 @@
         <td>
           <a href="#" ng-click="sortType = 'Side'; sortReverse=!sortReverse">
          
-          Side 
+          <font color="#3399ff">Side </font>
 			   <span ng-show="sortType == 'Side' && sortReverse==false" class="fa fa-caret-down"></span>
 			  <span ng-show="sortType == 'Side'&& sortReverse==true" class="fa fa-caret-up"></span>
           </a>
@@ -69,7 +104,7 @@
         <td>
          <a href="#" ng-click="sortType = 'Evaluator'; sortReverse=!sortReverse">
           
-          Evaluator 
+        <font color="#3399ff">  Evaluator </font>
 			 <span ng-show="sortType == 'Evaluator' && sortReverse==false" class="fa fa-caret-down"></span>
 			  <span ng-show="sortType == 'Evaluator' && sortReverse==true" class="fa fa-caret-up"></span>
           </a>
@@ -77,7 +112,7 @@
           <td>
          <a href="#" ng-click="sortType = 'RatePrice'; sortReverse=!sortReverse">
           
-          RatePrice 
+        <font color="#3399ff">  RatePrice </font>
 			 <span ng-show="sortType == 'RatePrice' && sortReverse==false" class="fa fa-caret-down"></span>
 			  <span ng-show="sortType == 'RatePrice' && sortReverse==true" class="fa fa-caret-up"></span>
           </a>
@@ -85,7 +120,7 @@
            <td>
          <a href="#" ng-click="sortType = 'Expiration'; sortReverse=!sortReverse">
           
-          Expiration 
+         <font color="#3399ff"> Expiration </font>
 			 <span ng-show="sortType == 'Expriration' && sortReverse==false" class="fa fa-caret-down"></span>
 			  <span ng-show="sortType == 'Expiration' && sortReverse==true" class="fa fa-caret-up"></span>
           </a>
@@ -93,7 +128,7 @@
            <td>
          <a href="#" ng-click="sortType = 'UsePercentMoney'; sortReverse=!sortReverse">
           
-          Use PercentMoney 
+        <font color="#3399ff">  Use PercentMoney </font>
 			 <span ng-show="sortType == 'UsePercentMoney' && sortReverse==false" class="fa fa-caret-down"></span>
 			  <span ng-show="sortType == 'UsePercentMoney' && sortReverse==true" class="fa fa-caret-up"></span>
           </a>
@@ -101,7 +136,7 @@
            <td>
          <a href="#" ng-click="sortType = 'BidStrike'; sortReverse=!sortReverse">
           
-          BidStrike 
+         <font color="#3399ff"> BidStrike </font>
 			 <span ng-show="sortType == 'BidStrike' && sortReverse==false" class="fa fa-caret-down"></span>
 			  <span ng-show="sortType == 'BidStrike' && sortReverse==true" class="fa fa-caret-up"></span>
           </a>
@@ -109,7 +144,7 @@
            <td>
          <a href="#" ng-click="sortType = 'MidStrike'; sortReverse=!sortReverse">
           
-          Mid Strike 
+         <font color="#3399ff"> Mid Strike </font>
 			 <span ng-show="sortType == 'MidStrike' && sortReverse==false" class="fa fa-caret-down"></span>
 			  <span ng-show="sortType == 'MidStrike' && sortReverse==true" class="fa fa-caret-up"></span>
           </a>
@@ -117,7 +152,7 @@
            <td>
          <a href="#" ng-click="sortType = 'HighStrike'; sortReverse=!sortReverse">
           
-          High Strike 
+          <font color="#3399ff">High Strike </font>
 			 <span ng-show="sortType == 'HighStrike' && sortReverse==false" class="fa fa-caret-down"></span>
 			  <span ng-show="sortType == 'HighStrike' && sortReverse==true" class="fa fa-caret-up"></span>
           </a>
@@ -125,7 +160,7 @@
            <td>
          <a href="#" ng-click="sortType = 'Account'; sortReverse=!sortReverse">
           
-          Account 
+         <font color="#3399ff"> Account </font>
 			 <span ng-show="sortType == 'Account' && sortReverse==false" class="fa fa-caret-down"></span>
 			  <span ng-show="sortType == 'Account' && sortReverse==true" class="fa fa-caret-up"></span>
           </a>
@@ -133,7 +168,7 @@
            <td>
          <a href="#" ng-click="sortType = 'Limit'; sortReverse=!sortReverse">
           
-          Limit 
+         <font color="#3399ff"> Limit </font>
 			 <span ng-show="sortType == 'Limit' && sortReverse==false" class="fa fa-caret-down"></span>
 			  <span ng-show="sortType == 'Limit' && sortReverse==true" class="fa fa-caret-up"></span>
           </a>
@@ -141,7 +176,7 @@
            <td>
          <a href="#" ng-click="sortType = 'ListnerType'; sortReverse=!sortReverse">
           
-          ListnerType 
+          <font color="#3399ff">ListnerType </font>
 			 <span ng-show="sortType == 'ListnerType' && sortReverse==false" class="fa fa-caret-down"></span>
 			  <span ng-show="sortType == 'ListnerType' && sortReverse==true" class="fa fa-caret-up"></span>
           </a>
@@ -149,7 +184,7 @@
            <td>
          <a href="#" ng-click="sortType = 'JobId'; sortReverse=!sortReverse">
           
-          JobID 
+          <font color="#3399ff">JobID </font>
 			 <span ng-show="sortType == 'JobId' && sortReverse==false" class="fa fa-caret-down"></span>
 			  <span ng-show="sortType == 'JibId' && sortReverse==true" class="fa fa-caret-up"></span>
           </a>
@@ -157,21 +192,21 @@
            <td>
          <a href="#" ng-click="sortType = 'Comments'; sortReverse=!sortReverse">
           
-          Comments 
+         <font color="#3399ff"> Comments </font>
 			 <span ng-show="sortType == 'Comments' && sortReverse==false" class="fa fa-caret-down"></span>
 			  <span ng-show="sortType == 'Comments' && sortReverse==true" class="fa fa-caret-up"></span>
           </a>
               </td>
 
-          <td> <a href="#">Remove</a></td>
-          <td> <a href="#">Edit</a></td>
+          <td> <a href="#"><font color="#3399ff">Remove</font></a></td>
+          <td> <a href="#"><font color="#3399ff">Edit</font></a></td>
       </tr>
     </thead>
     
     <tbody>
       <tr ng-repeat="(dataIndex,pr) in myData | orderBy:sortType:sortReverse | filter:searchItem | filter:jsonDate">
           
-        <%--<td>{{ pr.Symbol }}</td>--%> 
+       
           <td>
             <span data-ng-hide="editMode">{{pr.Symbol}}</span>
             <input type="text" data-ng-show="editMode" ng-model="pr.Symbol" data-ng-required />
@@ -191,15 +226,15 @@
         </td>
           
            <td>
-            <span data-ng-hide="editMode">{{pr.RatePriceFee}}</span>
+            <span data-ng-hide="editMode" >{{pr.RatePriceFee}}</span>
             <select ng-model="pr.RatePriceFee" data-ng-show="editMode">
                  <option ng-repeat="option in RatePrice" ng-selected="{{option==pr.RatePriceFee}}">{{option}}</option>
             </select>
         </td>
           
            <td>
-            <span data-ng-hide="editMode">{{pr.Expiration | jsonDate}}</span>
-            <input type="date" data-ng-show="editMode" ng-model="Expiration" />
+            <button data-ng-hide="editDate" class="glyphicon glyphicon-edit" data-ng-click="editDate = true"></button><span data-ng-hide="editDate" >{{pr.Expiration | jsonDate}}</span>
+            <button data-ng-show="editDate" class="glyphicon glyphicon-ok-sign" data-ng-click="editDate = false"></button><input type="date" data-ng-show="editDate" ng-model="Expiration" />
         </td>
           
            <td>
@@ -218,7 +253,8 @@
         </td>
           
            <td>
-            <span data-ng-hide="editMode">{{pr.HighStrike}}</span>
+               
+            <span data-ng-hide="editMode" >{{pr.HighStrike}}</span>
             <input type="text" data-ng-show="editMode" ng-model="pr.HighStrike" data-ng-required />
         </td>
           
@@ -254,36 +290,73 @@
                   pr.BidStrike,pr.MidStrike,pr.HighStrike,pr.Account,pr.Limit,pr.ListenerType,pr.JobId,pr.Comments) ">Update</button>
           </td>
       </tr>
+        <div>
         <tr>
-            <td><input type="text" ng-model="Symbol" id="Symobl"/></td>
-            <td><select ng-model="sideSelected" ng-options="option for option in Side" ></select></td>
-            <td><select ng-model="evaluatorSelected" ng-options="option for option in Evaluator"></select></td>
-            <td><select ng-model="ratePriceSelected" ng-options="option for option in RatePrice"></select></td>
-            <td><input type="date" ng-model="Expiration" id="Expiration"/></td>
-            <td><input type="text" ng-model="UsePercentMoney" id="UsePercentMoney"/></td>
-            <td><input type="text" ng-model="BidStrike" id="BidStrike"/></td>
-            <td><input type="text" ng-model="MidStrike" id="MidStrike"/></td>
-            <td><input type="text" ng-model="HighStrike" id="HighStrike"/></td>
-            <td><input type="text" ng-model="Account" id="Account"/></td>
-            <td><input type="text" ng-model="Limit" id="Limit"/></td>
-            <td><select ng-model="ListnerTypeSelected" ng-options="option for option in ListnerType"></select></td>
-            <td><input type="text" ng-model="JobId" id="JobId"/></td>
-            <td><input type="text" ng-model="Comments" id="Comments"/></td>
-            <td colspan="2" align="center"><input class="btn btn-primary" type="submit" ng-click="retData.saveResult()" value="Insert"/></td>
+           
+           <button id="myBtn" class="btn btn-primary">Add New</button>
         </tr>
+     
+        </div>
     </tbody>
     
   </table>
+                 </form>
+   <div id="myModal" class="modal" >
+
+            <div class="modal-content" style="min-width: 100px">
+                <span class="close">×</span>
+                <table class="table">
+                    <form>
+                        <fieldset>
+                            <legend>Insert a Record</legend>
+                
+               <tr> <td>Symbol: </td><td><input type="text" ng-model="Symbol" id="Symobl"/></td>
+            
+                <td>Side: </td><td><select ng-model="sideSelected" ng-options="option for option in Side"></select></td></tr>
+             
+               <tr> <td>Evaluator:</td><td> <select ng-model="evaluatorSelected" ng-options="option for option in Evaluator"></select></td>
+           
+               <td>RatePrice: </td><td><select ng-model="ratePriceSelected" ng-options="option for option in RatePrice"></select></td></tr>
+            
+               <tr> <td> Expiration:  </td><td><input type="date" ng-model="Expiration" id="Expiration"/></td>
+           
+               <td>Use Percent Money:</td><td> <input type="text" ng-model="UsePercentMoney" id="UsePercentMoney"/></td></tr>
+            
+              <tr> <td> Bid Strike:</td><td> <input type="text" ng-model="BidStrike" id="BidStrike"/></td>
+            
+              <td> Mid Strike: </td><td><input type="text" ng-model="MidStrike" id="MidStrike"/></td></tr>
+            
+              <tr> <td> High Strike:</td><td> <input type="text" ng-model="HighStrike" id="HighStrike"/></td>
+           
+              <td> Account: </td><td><input type="text" ng-model="Account" id="Account"/></td></tr>
+            
+              <tr> <td> Limit: </td><td> <input type="text" ng-model="Limit" id="Limit"/></td>
+           
+             <td> Listner Type:  </td><td><select ng-model="ListnerTypeSelected" ng-options="option for option in ListnerType"></select></td></tr>
+           
+              <tr> <td> JobId: </td><td><input type="text" ng-model="JobId" id="JobId"/></td>
+           
+              <td> Comments: </td><td><textarea ng-model="Comments" id="Comments"></textarea></td></tr>
+            
+               <tr> <td> <input class="btn btn-primary" type="submit" ng-click="retData.saveResult()" value="Insert"/></td></tr>
+                </fieldset>
+                            </form>
+                        </table>
+            </div>
+        </div>
+        </div>
+
+   
   
             <br />  
-<div >Result from server: {{myData}}  </div>
-  </div>
-             </form>
-
-
+<%--<div >Result from server: {{myData}}  </div>--%>
+             
         </div>
-     
-        <script>
+
+
+        
+
+<script>
             /* $(document).ready(function() {
                 // retDate.getResult(item,$event);
              });*/
@@ -298,6 +371,7 @@
                         $scope.sortType = '';
                         $scope.sortReverse = false;
                         $scope.IsVisible = true;
+                        $scope.editDate = false;
                         $scope.retData.getResult = function () {
                             $http.post('ProjectWeb.aspx/GetData', { data: {} })
                                 .success(function (data, status, headers, config) {
@@ -373,7 +447,7 @@
                                     $scope.status = status;
                                 });
                         };
-                        
+                       
 
                     }).config(function ($httpProvider) {
                         $httpProvider.defaults.headers.post = {};
@@ -430,6 +504,33 @@
                     });;
             })();
         </script>  
+    <script>
+        // Get the modal
+        var modal = document.getElementById('myModal');
+
+        // Get the button that opens the modal
+        var btn = document.getElementById("myBtn");
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+
+        // When the user clicks the button, open the modal
+        btn.onclick = function () {
+            modal.style.display = "block";
+        }
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
+        }
+</script>
   
 </body>
 </html>
